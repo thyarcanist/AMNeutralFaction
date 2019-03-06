@@ -1,0 +1,73 @@
+scn AMVoidDISG
+
+float fUpdatedNegAMKVD
+float fUpdatedPosAMKVD
+
+Begin OnAdd player
+
+  ;Check to see if player was wearing faction armor.
+  if DisguiseFactionPulseQuest.bFactionArmorEquipped == 0
+  
+    ;Set variable to track wearing faction armor
+    set DisguiseFactionPulseQuest.bFactionArmorEquipped to 1
+
+    ;Player was not wearing faction armor - so we restore their reputation values
+    ;Store Reputations
+
+    set DisguiseFactionPulseQuest.fNegAMKVDReputation to GetReputation AMNeutralRep 0
+    set DisguiseFactionPulseQuest.fPosAMKVDReputation to GetReputation AMNeutralRep 1
+
+
+  else
+     ;Get Current Faction Values and add stored values
+     set DisguiseFactionPulseQuest.fNegAMKVDReputation to GetReputation AMNeutralRep 0 + DisguiseFactionPulseQuest.fNegAMKVDReputation
+     set DisguiseFactionPulseQuest.fPosAMKVDReputation to GetReputation AMNeutralRep 1 + DisguiseFactionPulseQuest.fPosAMKVDReputation
+
+  endif
+
+    ;Clear Reputation
+    SetReputation AMNeutralRep 0 0.0
+    SetReputation AMNeutralRep 1 0.0
+
+
+  endif
+  
+  if VFactionArmorTutorial == 0
+      ShowMessage VFactionOutfitTutorial
+      set VFactionArmorTutorial to 1
+  endif
+
+  ShowWarning AMVoidDISGWarning
+  StartQuest DisguiseFactionPulseQuest ;Kicks the pulse placing quest
+  player.addtofaction ArchMagusFaction 0
+
+end
+
+Begin OnUnequip Player
+  if Player.GetEquipped AMArmorLeather == 0
+  player.RemoveFromFaction ArchMagusFaction
+  ;ShowMessageWhat?
+
+  ;Restore Factions
+  ;Get Current Values and add stored values
+  set fUpdatedNegNCR to GetReputation AMNeutralRep 0 + DisguiseFactionPulseQuest.fNegAMKVDReputation
+  set fUpdatedPosNCR to GetReputation AMNeutralRep 1 + DisguiseFactionPulseQuest.fPosAMKVDReputation
+
+
+  endif
+
+  ;If the player is not wearing ANY faction armor, clear this variable.
+  if (Player.GetEquipped FactionGearNVNCR == 0) && (Player.GetEquipped FactionGearNVCaesar == 0) && (Player.GetEquipped FactionGearNVBrotherhood == 0) && (Player.GetEquipped FactionGearNVGreatKhans == 0) && (Player.GetEquipped FactionGearNVPowder == 0) && (player.GetEquipped VMS18WhiteGloveMask == 0 || (Player.GetEquipped OutfitFormalWear == 0 && player.GetEquipped ArmorWhiteGloveSociety == 0))
+
+  ;clear wearing faction armor variable
+  set DisguiseFactionPulseQuest.bFactionArmorEquipped to 0
+
+  ;Set Reputation Values to Updated
+  SetReputation AMNeutralRep 0 fUpdatedNegAMKVD
+  SetReputation AMNeutralRep 1 fUpdatedPosAMKVD
+
+  endif
+
+end
+
+End
