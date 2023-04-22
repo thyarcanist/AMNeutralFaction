@@ -1,4 +1,4 @@
-# AMNeutralFaction
+# AMNeutralFaction - Pacify Raiders with Style
 Script that sets you neutral to raiders and teammates in Fallout New Vegas, it's mainly for the New California mod but it should also work for normal Fallout: NV as well.
 
 ![image](https://user-images.githubusercontent.com/48234494/233802901-fda002e8-ebd1-41c4-b567-77b496f007ab.png)
